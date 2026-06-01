@@ -1,7 +1,12 @@
 use std::path::PathBuf;
 
+use strix_pipeline::domain::strix::models::vector::VectorGenerationType;
+
 #[derive(Debug, clap::Parser)]
 pub struct Args {
+    #[arg(short, long, default_value = "./config.yaml")]
+    /// Path to config file
+    pub config: PathBuf,
     #[clap(subcommand)]
     pub cmd: Command,
 }
@@ -20,13 +25,13 @@ pub enum Command {
 pub struct Add {
     /// Corpus to add
     pub corpus: String,
-    #[clap(flatten)]
-    pub common: Common,
+    // #[clap(flatten)]
+    // pub common: Common,
     #[arg(long)]
     /// Set if you want a previous version of corpus to be deleted (if it exists).
     /// Alias for corpus is always deleted.
     pub delete_previous_versions: bool,
-    #[arg(long, default_value = "none")]
+    #[arg(long)]
     /// Document vectors can be generated on config.vector_server, locally or not at all.
     pub vector_generation_type: Option<VectorGeneration>,
 }
@@ -35,16 +40,16 @@ pub struct Add {
 pub struct Delete {
     /// Corpus to delete
     pub corpus: String,
-    #[clap(flatten)]
-    pub common: Common,
+    // #[clap(flatten)]
+    // pub common: Common,
 }
 
 #[derive(Debug, clap::Parser)]
 pub struct GenerateVectorData {
     /// Corpus to update
     pub corpus: String,
-    #[clap(flatten)]
-    pub common: Common,
+    // #[clap(flatten)]
+    // pub common: Common,
     #[arg(long)]
     #[arg(long, default_value = "local")]
     /// Document vectors can be generated on config.vector_server or locally.
@@ -61,4 +66,13 @@ pub struct Common {
 pub enum VectorGeneration {
     Remote,
     Local,
+}
+
+impl VectorGeneration {
+    pub fn as_domain(&self) -> VectorGenerationType {
+        match self {
+            Self::Local => VectorGenerationType::Local,
+            Self::Remote => VectorGenerationType::Remote,
+        }
+    }
 }

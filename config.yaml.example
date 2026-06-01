@@ -1,0 +1,20 @@
+elastic_hosts: [{host: localhost, port: 9200}]
+texts_dir: /home/strix/texts
+settings_dir: /home/strix/strix-settings-sb/config
+base_dir: .
+
+## set to enable generation of document vectors on other machine
+# transformers_postprocess_server: "user@myserver"
+# transformers_postprocess_dir: "/home/strix/transformers_data"
+# transformers_postprocess_server_dir: "/var/tmp/strix/data"
+
+
+## index settings
+number_of_shards: 1
+number_of_replicas: 0
+terms_number_of_shards: 1
+terms_number_of_replicas: 0
+
+## log settings
+## choose between DEBUG, INFO, WARN, ERROR
+# log_level: INFO
